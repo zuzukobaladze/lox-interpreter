@@ -53,7 +53,7 @@ public class Lox {
 
         Parser parser = new Parser(tokens);
         Expr expression = parser.parse();
-// Stop if there was a syntax error.
+        // Stop if there was a syntax error.
         if (hadError) {
             return;
         }

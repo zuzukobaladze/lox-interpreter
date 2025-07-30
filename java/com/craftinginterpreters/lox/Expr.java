@@ -1,5 +1,7 @@
 package com.craftinginterpreters.lox;
 
+import java.util.List;
+
 abstract class Expr {
   interface Visitor<R> {
     R visitBinaryExpr(Binary expr);
@@ -7,7 +9,6 @@ abstract class Expr {
     R visitLiteralExpr(Literal expr);
     R visitUnaryExpr(Unary expr);
   }
-
   static class Binary extends Expr {
     Binary(Expr left, Token operator, Expr right) {
       this.left = left;
@@ -24,7 +25,6 @@ abstract class Expr {
     final Token operator;
     final Expr right;
   }
-
   static class Grouping extends Expr {
     Grouping(Expr expression) {
       this.expression = expression;
@@ -37,7 +37,6 @@ abstract class Expr {
 
     final Expr expression;
   }
-
   static class Literal extends Expr {
     Literal(Object value) {
       this.value = value;
@@ -50,7 +49,6 @@ abstract class Expr {
 
     final Object value;
   }
-
   static class Unary extends Expr {
     Unary(Token operator, Expr right) {
       this.operator = operator;

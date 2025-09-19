@@ -16,10 +16,10 @@ class AstPrinter implements Expr.Visitor<String> {
         return parenthesize("group", expr.expression);
     }
 
-    // @Override
-    // public String visitAssignExpr(Expr.Assign expr) {
-    //     return parenthesize("=", expr.name.lexeme, expr.value);
-    // }
+    @Override
+    public String visitAssignExpr(Expr.Assign expr) {
+        return parenthesize("=", expr.name.lexeme, expr.value);
+    }
 
     @Override
     public String visitLiteralExpr(Expr.Literal expr) {

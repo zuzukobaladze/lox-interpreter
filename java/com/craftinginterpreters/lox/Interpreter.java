@@ -3,6 +3,7 @@ package com.craftinginterpreters.lox;
 import java.util.List;
 
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
+
     private Environment environment = new Environment();
 
     @Override
@@ -69,7 +70,9 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     private void checkNumberOperand(Token operator, Object operand) {
-        if (operand instanceof Double) return;
+        if (operand instanceof Double) {
+            return;
+        }
         throw new RuntimeError(operator, "Operand must be a number.");
     }
 
@@ -84,8 +87,12 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     private boolean isEqual(Object a, Object b) {
-        if (a == null && b == null) return true;
-        if (a == null) return false;
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null) {
+            return false;
+        }
         return a.equals(b);
     }
 
@@ -137,7 +144,9 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     private void checkNumberOperands(Token operator, Object left, Object right) {
-        if (left instanceof Double && right instanceof Double) return;
+        if (left instanceof Double && right instanceof Double) {
+            return;
+        }
         throw new RuntimeError(operator, "Operands must be numbers.");
     }
 
@@ -155,8 +164,29 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         stmt.accept(this);
     }
 
+    @Override
+    public Void visitBlockStmt(Stmt.Block stmt) {
+        executeBlock(stmt.statements, new Environment(environment));
+        return null;
+    }
+
+    private void executeBlock(List<Stmt> statements, Environment environment) {
+        Environment previous = this.environment;
+        try {
+            this.environment = environment;
+
+            for (Stmt statement : statements) {
+                execute(statement);
+            }
+        } finally {
+            this.environment = previous;
+        }
+    }
+
     private String stringify(Object object) {
-        if (object == null) return "nil";
+        if (object == null) {
+            return "nil";
+        }
         if (object instanceof Double) {
             String text = object.toString();
             if (text.endsWith(".0")) {

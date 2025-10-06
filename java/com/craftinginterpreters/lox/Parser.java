@@ -133,11 +133,9 @@ public class Parser {
                 Arrays.asList(initializer, body)
             );
         }
-
             return body;
         }
 
-    
 
     private Stmt ifStatement() {
         consume(LEFT_PAREN, "Expect '(' after 'if'.");
